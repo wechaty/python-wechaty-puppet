@@ -1,0 +1,9 @@
+flake8
+mypy
+mypy_extensions
+pycodestyle
+pylint
+pylint_quotes
+pytest
+pytype
+semver
