@@ -7,7 +7,6 @@
 > Picture Credit: [https://www.shareicon.net](https://www.shareicon.net/puppet-marionette-puppeteer-puppet-variant-marionette-variant-665400)
 
 [![PyPI Version](https://img.shields.io/pypi/v/wechaty-puppet?color=blue)](https://pypi.org/project/wechaty-puppet)
-[![Downloads](https://pepy.tech/badge/wechaty-puppet)](https://pepy.tech/project/wechaty-puppet)
 ![PyPI - Downloads](https://img.shields.io/pypi/dm/wechaty-puppet?color=blue)
 
 Abstract(Base) Class of Puppet Providers for Wechaty Framework.
