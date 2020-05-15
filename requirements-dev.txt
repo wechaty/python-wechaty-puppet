@@ -1,5 +1,5 @@
 flake8
-mypy
+mypy>=0.770
 mypy_extensions
 pycodestyle
 pylint
