@@ -1,9 +1,14 @@
 flake8
-mypy>=0.770
+mypy
 mypy_extensions
 pycodestyle
 pylint
-pylint_quotes
+pylint-quotes
 pytest
-pytype
+pytype==2020.2.20
 semver
+grpclib
+pyee
+requests
+qrcode
+betterproto
