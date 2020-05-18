@@ -20,9 +20,11 @@ limitations under the License.
 """
 from __future__ import annotations
 
-from dataclasses import dataclass
 from enum import Enum
+from dataclasses import dataclass
 from typing import List, Optional
+
+from wechaty_puppet import MessageType
 
 
 class ScanStatus(Enum):
