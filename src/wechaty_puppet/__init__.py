@@ -3,29 +3,29 @@ doc
 """
 
 # message module
-from chatie_grpc.wechaty import (   # type: ignore
+from .schemas.types import (   # type: ignore
 
     # Message
     MessageType,
-    MessagePayloadResponse as MessagePayload,
+    MessagePayload,
 
     # Contact
     ContactGender,
     ContactType,
-    ContactPayloadResponse as ContactPayload,
+    ContactPayload,
 
     # Friendship
     FriendshipType,
-    FriendshipPayloadResponse as FriendshipPayload,
+    FriendshipPayload,
 
     # Room
-    RoomPayloadResponse as RoomPayload,
-    RoomMemberPayloadResponse as RoomMemberPayload,
+    RoomPayload,
+    RoomMemberPayload,
 
     # UrlLink
 
     # RoomInvitation
-    RoomInvitationPayloadResponse as RoomInvitationPayload,
+    RoomInvitationPayload,
 
     # Image
     ImageType,

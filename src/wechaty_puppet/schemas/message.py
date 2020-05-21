@@ -24,7 +24,7 @@ from typing import Optional
 
 from dataclasses import dataclass
 
-from chatie_grpc.wechaty import MessageType     # type: ignore
+from .types import MessageType
 
 
 class WechatAppMessageType(Enum):
