@@ -19,7 +19,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 """
 from __future__ import annotations
-from typing import Optional, List
+from typing import Optional
 
 from dataclasses import dataclass
 
@@ -41,29 +41,3 @@ class RoomQueryFilter:
     """
     id: Optional[str] = None
     topic: Optional[str] = None
-
-
-@dataclass
-class RoomPayload:
-    """
-    room payload data structure
-    """
-    id: str
-    topic: str
-    admin_ids: Optional[List[str]] = None
-    avatar: Optional[str] = None
-    member_ids: Optional[List[str]] = None
-    owner_id: Optional[str] = None
-
-
-@dataclass
-class RoomMemberPayload:
-    """
-    room member payload structure
-    """
-    id: str
-    avatar: str
-    name: str
-
-    room_alias: Optional[str] = None
-    inviter_id: Optional[str] = None

@@ -74,7 +74,7 @@ class Watchdog(AsyncIOEventEmitter):
 
     def feed(self, food: WatchdogFood):
         """feed the food to the watch dog"""
-        log.info('feed the food <%s> the watchdog', food)
+        log.debug('feed the food <%s> the watchdog', food)
         self._last_food = food
         self._last_feed = datetime.now()
         self.emit('feed', food, self._last_feed)
@@ -96,23 +96,3 @@ class Watchdog(AsyncIOEventEmitter):
             self.emit('death', self._last_food, self._last_feed)
             return True
         return False
-
-
-async def main():
-    """example code of the watchdog"""
-
-    food = WatchdogFood(data={'food_name': 'apple'}, timeout=1)
-    dog = Watchdog(3)
-
-    dog.on('feed', lambda x, _: print('eating food')). \
-        on('sleep', lambda x, _: print('eat or not, go to sleep')).\
-        on('death', lambda x, _: print('dog is starved to death'))
-    dog.feed(food)
-    while True:
-        await dog.sleep()
-        is_death = dog.starved_to_death()
-        if is_death:
-            break
-
-
-# asyncio.run(main())

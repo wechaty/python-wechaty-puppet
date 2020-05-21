@@ -20,33 +20,11 @@ limitations under the License.
 """
 from __future__ import annotations
 from enum import Enum
-from typing import List
 from typing import Optional
 
 from dataclasses import dataclass
 
-
-class MessageType(Enum):
-    """
-    doc
-    """
-    Unknown = 0
-    Attachment = 1
-    Audio = 2
-    Contact = 3
-    ChatHistory = 4
-    Emoticon = 5
-    Image = 5
-    Text = 6
-    Location = 7
-    MiniProgram = 8
-
-    Transfer = 9
-    RedEnvelope = 10
-
-    Recalled = 11
-    Url = 12
-    Video = 13
+from chatie_grpc.wechaty import MessageType     # type: ignore
 
 
 class WechatAppMessageType(Enum):
@@ -104,18 +82,6 @@ class WechatMessageType(Enum):
 
 
 @dataclass
-class MessagePayloadBase:
-    id: str
-    mention_ids: List[str]
-
-    time_stamp: float
-    type: MessageType
-
-    file_name: Optional[str] = None
-    text: Optional[str] = None
-
-
-@dataclass
 class MessagePayloadRoom:
 
     room_id: str
@@ -132,27 +98,6 @@ class MessagePayloadTo:
     # if to is not set, then room must be set
     to_id: str
 
-    room_id: Optional[str] = None
-
-
-@dataclass
-class EventMessagePayload:
-    message_id: str
-
-
-@dataclass
-class MessagePayload:
-    id: str
-    mention_ids: List[str]
-
-    time_stamp: float
-    type: MessageType
-    from_id: str
-
-    file_name: Optional[str] = None
-    text: Optional[str] = None
-
-    to_id: Optional[str] = None
     room_id: Optional[str] = None
 
 

@@ -23,21 +23,27 @@ from __future__ import annotations
 from typing import List, Optional
 
 from chatie_grpc.wechaty import (   # type: ignore
-    FriendshipPayloadResponse as FriendshipPayload
+    FriendshipPayloadResponse as FriendshipPayload,
+    ContactPayloadResponse as ContactPayload,
+    ImageType,
+    MessagePayloadResponse as MessagePayload,
+
+    RoomPayloadResponse as RoomPayload,
+    RoomMemberPayloadResponse as RoomMemberPayload,
+
+    RoomInvitationPayloadResponse as RoomInvitationPayload,
+
 )
 
 from wechaty_puppet.file_box import FileBox
-from wechaty_puppet.schemas.contact import (
-    ContactPayload,
-)
+
 
 # from wechaty_puppet.schemas.friendship import (
 #     FriendshipPayload
 # )
-from wechaty_puppet.schemas.image import ImageType
+
 from wechaty_puppet.schemas.message import (
     MessageQueryFilter,
-    MessagePayload
 )
 from wechaty_puppet.schemas.mini_program import (
     MiniProgramPayload
@@ -45,12 +51,7 @@ from wechaty_puppet.schemas.mini_program import (
 # pylint: disable=R0904
 from wechaty_puppet.schemas.puppet import PuppetOptions
 from wechaty_puppet.schemas.room import (
-    RoomQueryFilter,
-    RoomPayload,
-    RoomMemberPayload
-)
-from wechaty_puppet.schemas.room_invitation import (
-    RoomInvitationPayload
+    RoomQueryFilter
 )
 from wechaty_puppet.schemas.url_link import UrlLinkPayload
 from wechaty_puppet.state_switch import StateSwitch

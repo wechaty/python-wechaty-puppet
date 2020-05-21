@@ -14,7 +14,6 @@ from chatie_grpc.wechaty import (   # type: ignore
     ContactType,
     ContactPayloadResponse as ContactPayload,
 
-    # Message
     # Friendship
     FriendshipType,
     FriendshipPayloadResponse as FriendshipPayload,
@@ -33,12 +32,6 @@ from chatie_grpc.wechaty import (   # type: ignore
 
     # Event
     EventType,
-
-    # MiniProgram
-
-    # MessageContactResponse,
-    # MessageFileResponse,
-    # MessageImageResponse
 )
 
 from .puppet import (
@@ -56,7 +49,7 @@ from .schemas.contact import (
 )
 
 from .schemas.friendship import (
-    FriendshipSearchCondition
+    FriendshipSearchQueryFilter
 )
 
 from .schemas.room import (
@@ -70,6 +63,8 @@ from .schemas.mini_program import MiniProgramPayload
 
 from .schemas.event import (
     EventScanPayload,
+    ScanStatus,
+
     EventDongPayload,
     EventLoginPayload,
     EventReadyPayload,
@@ -99,7 +94,7 @@ __all__ = [
 
     'FileBox',
     'FriendshipType',
-    'FriendshipSearchCondition',
+    'FriendshipSearchQueryFilter',
     'FriendshipPayload',
 
     'MessagePayload',
@@ -118,6 +113,8 @@ __all__ = [
     'MiniProgramPayload',
 
     'EventScanPayload',
+    'ScanStatus',
+
     'EventDongPayload',
     'EventLoginPayload',
     'EventReadyPayload',
