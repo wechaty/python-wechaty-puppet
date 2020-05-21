@@ -1,1 +1,2 @@
-VERSION = '0.0.3'
+'''Auto-generated. Do NOT edit.'''
+VERSION = '0.0.4'
