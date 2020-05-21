@@ -87,3 +87,13 @@ publish:
 .PHONY: demo
 demo:
 	python3 examples/demo.py
+
+.PHONY: version
+version:
+	@newVersion=$$(awk -F. '{print $$1"."$$2"."$$3+1}' < VERSION) \
+		&& echo $${newVersion} > VERSION \
+		&& echo VERSION = \'$${newVersion}\' > src/wechaty_puppet/version.py \
+		&& git add VERSION src/wechaty_puppet/version.py \
+		&& git commit -m "$${newVersion}" > /dev/null \
+		&& git tag "v$${newVersion}" \
+		&& echo "Bumped version to $${newVersion}"
