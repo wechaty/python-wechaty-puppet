@@ -52,7 +52,8 @@ mypy:
 
 .PHONE: pytype
 pytype:
-	pytype src/ --disable=import-error,pyi-error
+	# pytype src/ --disable=import-error,pyi-error
+	echo "skip pytype for not support Python 3.7 (yet, for temporary)"
 
 .PHONY: install
 install:
@@ -92,7 +93,8 @@ demo:
 version:
 	@newVersion=$$(awk -F. '{print $$1"."$$2"."$$3+1}' < VERSION) \
 		&& echo $${newVersion} > VERSION \
-		&& echo VERSION = \'$${newVersion}\' > src/wechaty_puppet/version.py \
+		&& echo '"""Auto-generated. Do NOT edit."""' > src/wechaty_puppet/version.py \
+		&& echo VERSION = \'$${newVersion}\' >> src/wechaty_puppet/version.py \
 		&& git add VERSION src/wechaty_puppet/version.py \
 		&& git commit -m "$${newVersion}" > /dev/null \
 		&& git tag "v$${newVersion}" \
