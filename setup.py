@@ -46,6 +46,7 @@ def setup() -> None:
         license='Apache-2.0',
         url='https://github.com/wechaty/python-wechaty-puppet',
         packages=setuptools.find_packages('src'),
+        install_requires=['pyee', 'requests', 'chatie-grpc'],
         package_dir={'': 'src'},
         classifiers=[
             'Programming Language :: Python :: 3.7',

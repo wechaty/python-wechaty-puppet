@@ -1,3 +1,3 @@
 pyee
 requests
-chatie-grpc==0.15.dev6
+chatie-grpc
