@@ -471,3 +471,17 @@ class Puppet:
         get the avatar of the room
         """
         raise NotImplementedError
+
+    async def logout(self):
+        """
+        logout the account
+        :return:
+        """
+        raise NotImplementedError
+
+    async def login(self):
+        """
+        login the account
+        :return:
+        """
+        raise NotImplementedError
