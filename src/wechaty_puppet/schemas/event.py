@@ -132,3 +132,4 @@ class EventResetPayload(EventPayloadBase):
 @dataclass
 class EventHeartbeatPayload(EventPayloadBase):
     data: str
+    timeout: Optional[int] = None
