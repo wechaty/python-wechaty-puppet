@@ -21,7 +21,61 @@ limitations under the License.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional
+from typing import Optional, Union
+from enum import Enum
+
+
+class FriendshipType(Enum):
+    Unknown = 0
+    Confirm = 1
+    Receive = 2
+    Verify = 3
+
+class FriendshipSceneType(Enum):
+    Unknown = 0,
+    QQ = 1,
+    Email = 2,
+    Weixin = 3,
+    QQtbd = 12,
+    Room = 14,
+    Phone = 15,
+    Card = 17,
+    Location = 18,
+    Bottle = 25,
+    Shaking = 29,
+    QRCode = 30,
+
+
+@dataclass
+class FriendshipPayloadBase:
+    id: str
+    contactId: str
+    timestamp: int
+    hello: Optional[str]
+
+
+class FriendshipPayloadConfirm(FriendshipPayloadBase):
+    type: FriendshipType.Confirm
+
+
+class FriendshipPayloadReceive(FriendshipPayloadBase):
+    ticket: str
+    type: FriendshipType.Receive
+    scene: Optional[FriendshipSceneType] = None
+    stranger: Optional[str] = None
+
+
+class FriendshipPayloadVerify(FriendshipPayloadBase):
+    type: FriendshipType.Verify
+
+
+FriendshipPayload = Union[FriendshipPayloadConfirm, FriendshipPayloadReceive, FriendshipPayloadVerify]
+
+
+@dataclass
+class FriendshipSearchCondition:
+    phone: Optional[str]
+    weixin: Optional[str]
 
 
 @dataclass

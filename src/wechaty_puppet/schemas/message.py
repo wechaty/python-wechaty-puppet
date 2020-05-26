@@ -20,11 +20,29 @@ limitations under the License.
 """
 from __future__ import annotations
 from enum import Enum
-from typing import Optional
+from typing import Optional, List, Union
 
 from dataclasses import dataclass
 
-from .types import MessageType
+
+class MessageType(Enum):
+    Unknown = 0,
+
+    Attachment = 1,  # Attach(6),
+    Audio = 2,  # Audio(1), Voice(34)
+    Contact = 3,  # ShareCard(42)
+    ChatHistory = 4,  # ChatHistory(19)
+    Emoticon = 5,  # Sticker: Emoticon(15), Emoticon(47)
+    Image = 6,  # Img(2), Image(3)
+    Text = 7,  # Text(1)
+    Location = 8,  # Location(48)
+    MiniProgram = 9,  # MiniProgram(33)
+    GroupNote = 10,  # GroupNote(53)
+    Transfer = 11,  # Transfers(2000)
+    RedEnvelope = 12,  # RedEnvelopes(2001)
+    Recalled = 13,  # Recalled(10002)
+    Url = 14,  # Url(5)
+    Video = 15,  # Video(4), Video(43)
 
 
 class WechatAppMessageType(Enum):
@@ -82,9 +100,19 @@ class WechatMessageType(Enum):
 
 
 @dataclass
+class MessagePayloadBase:
+    id: str
+    mention_ids: List[str]
+    timestamp: int
+    type: MessageType
+    filename: Optional[str] = None
+    text: Optional[str] = None
+
+
+@dataclass
 class MessagePayloadRoom:
 
-    room_id: str
+    room_id: str = None
     from_id: Optional[str] = None
 
     # if to is not set, then room must be set
@@ -93,12 +121,25 @@ class MessagePayloadRoom:
 
 @dataclass
 class MessagePayloadTo:
-    from_id: str
+    from_id: str = None
 
     # if to is not set, then room must be set
-    to_id: str
+    to_id: str = None
 
     room_id: Optional[str] = None
+
+
+@dataclass
+class PayloadBaseAndRoom(MessagePayloadRoom, MessagePayloadBase):
+    pass
+
+
+@dataclass
+class PayloadBaseAndTo(MessagePayloadTo, MessagePayloadBase):
+    pass
+
+
+MessagePayload = Union[PayloadBaseAndRoom, PayloadBaseAndTo]
 
 
 @dataclass

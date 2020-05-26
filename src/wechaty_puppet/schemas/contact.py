@@ -23,6 +23,19 @@ from typing import Optional
 from dataclasses import dataclass
 
 
+class ContactGender(Enum):
+    unknown = 0
+    male = 1
+    female = 2
+
+
+class ContactType(Enum):
+    unknown = 0
+    individual = 1
+    official = 2
+    personal = individual,
+
+
 @dataclass
 class ContactQueryFilter:
     """
@@ -31,4 +44,22 @@ class ContactQueryFilter:
     alias: Optional[str] = None
     id: Optional[str] = None
     name: Optional[str] = None
+    weixin: Optional[str] = None
+
+
+@dataclass
+class ContactPayload:
+    id: str
+    gender: ContactGender
+    type: ContactType
+    name: str
+    avatar: str
+
+    address: Optional[str] = None
+    alias: Optional[str] = None
+    city: Optional[str] = None
+    friend: Optional[bool] = None
+    province: Optional[str] = None
+    signature: Optional[str] = None
+    star: Optional[bool] = None
     weixin: Optional[str] = None

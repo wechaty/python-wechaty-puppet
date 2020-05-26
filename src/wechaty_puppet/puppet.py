@@ -43,7 +43,7 @@ from wechaty_puppet.schemas.room import (
 from wechaty_puppet.schemas.url_link import UrlLinkPayload
 from wechaty_puppet.state_switch import StateSwitch
 
-from wechaty_puppet.schemas.types import (   # type: ignore
+from wechaty_puppet import (   # type: ignore
     FriendshipPayload,
     ContactPayload,
     ImageType,
@@ -469,5 +469,19 @@ class Puppet:
     async def room_avatar(self, room_id: str) -> FileBox:
         """
         get the avatar of the room
+        """
+        raise NotImplementedError
+
+    async def logout(self):
+        """
+        logout the account
+        :return:
+        """
+        raise NotImplementedError
+
+    async def login(self):
+        """
+        login the account
+        :return:
         """
         raise NotImplementedError

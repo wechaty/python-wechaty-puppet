@@ -1,64 +1,48 @@
 """
 doc
 """
+from chatie_grpc.wechaty import EventType
+from wechaty_puppet.puppet import (
+    Puppet,
+    PuppetOptions
+)
 
-# message module
-from .schemas.types import (   # type: ignore
+from .file_box import FileBox
 
-    # Message
+from .schemas.message import (
     MessageType,
+    MessageQueryFilter,
     MessagePayload,
+)
 
+from .schemas.contact import (
     # Contact
     ContactGender,
     ContactType,
     ContactPayload,
-
-    # Friendship
-    FriendshipType,
-    FriendshipPayload,
-
-    # Room
-    RoomPayload,
-    RoomMemberPayload,
-
-    # UrlLink
-
-    # RoomInvitation
-    RoomInvitationPayload,
-
-    # Image
-    ImageType,
-
-    # Event
-    EventType,
-)
-
-from .puppet import (
-    Puppet,
-    PuppetOptions
-)
-from .file_box import FileBox
-
-from .schemas.message import (
-    MessageQueryFilter,
-)
-
-from .schemas.contact import (
     ContactQueryFilter
 )
 
 from .schemas.friendship import (
+    FriendshipPayloadConfirm,
+    FriendshipPayloadReceive,
+    FriendshipPayloadVerify,
+    FriendshipSceneType,
+    FriendshipType,
+    FriendshipPayload,
     FriendshipSearchQueryFilter
 )
 
 from .schemas.room import (
+    # Room
+    RoomPayload,
+    RoomMemberPayload,
     RoomQueryFilter,
     RoomMemberQueryFilter,
 )
 
 from .schemas.url_link import UrlLinkPayload
-
+from .schemas.room_invitation import RoomInvitationPayload
 from .schemas.mini_program import MiniProgramPayload
 
 from .schemas.event import (
@@ -76,12 +60,13 @@ from .schemas.event import (
     EventRoomJoinPayload,
     EventRoomInvitePayload,
 
-
     EventMessagePayload,
     EventHeartbeatPayload,
     EventFriendshipPayload,
     EventErrorPayload
 )
+
+from .schemas.image import ImageType
 
 __all__ = [
     'Puppet',
@@ -93,6 +78,10 @@ __all__ = [
     'ContactType',
 
     'FileBox',
+    'FriendshipPayloadConfirm',
+    'FriendshipPayloadReceive',
+    'FriendshipPayloadVerify',
+    'FriendshipSceneType',
     'FriendshipType',
     'FriendshipSearchQueryFilter',
     'FriendshipPayload',
@@ -130,6 +119,5 @@ __all__ = [
     'EventErrorPayload',
 
     'ImageType',
-    'EventType'
-
+    'EventType',
 ]

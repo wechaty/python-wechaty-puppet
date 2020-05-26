@@ -22,7 +22,7 @@ from __future__ import annotations
 
 from enum import Enum
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import List, Optional, Union
 
 
 class ScanStatus(Enum):
@@ -38,54 +38,42 @@ class ScanStatus(Enum):
 
 
 @dataclass
-class EventPayloadBase:
-    pass
-
-
-@dataclass
-class EventFriendshipPayload(EventPayloadBase):
+class EventFriendshipPayload:
     friendship_id: str
 
 
 @dataclass
-class EventLoginPayload(EventPayloadBase):
+class EventLoginPayload:
     contact_id: str
 
 
 @dataclass
-class EventLogoutPayload(EventPayloadBase):
+class EventLogoutPayload:
     contact_id: str
     data: str
 
 
 @dataclass
-class EventMessagePayload(EventPayloadBase):
+class EventMessagePayload:
     message_id: str
-    type: Optional[str] = None
-    from_id: Optional[str] = None
-    filename: Optional[str] = None
-    text: Optional[str] = None
-    timestamp: Optional[float] = None
-    room_id: Optional[str] = None
-    to_id: Optional[str] = None
-    mention_ids: Optional[List[str]] = None
 
 
 @dataclass
-class EventRoomInvitePayload(EventPayloadBase):
+class EventRoomInvitePayload:
     room_invitation_id: str
 
 
 @dataclass
-class EventRoomJoinPayload(EventPayloadBase):
+class EventRoomJoinPayload:
     # TODO -> discuss name style
     invited_ids: List[str]
     inviter_id: str
     room_id: str
     time_stamp: float
 
+
 @dataclass
-class EventRoomLeavePayload(EventPayloadBase):
+class EventRoomLeavePayload:
     # TODO -> discuss name style
     removed_ids: List[str]
     remover_id: str
@@ -94,7 +82,7 @@ class EventRoomLeavePayload(EventPayloadBase):
 
 
 @dataclass
-class EventRoomTopicPayload(EventPayloadBase):
+class EventRoomTopicPayload:
     changer_id: str
     new_topic: str
     old_topic: str
@@ -103,32 +91,38 @@ class EventRoomTopicPayload(EventPayloadBase):
 
 
 @dataclass
-class EventScanPayload(EventPayloadBase):
+class EventScanPayload:
     status: ScanStatus
     qrcode: Optional[str] = None
     data: Optional[str] = None
 
 
 @dataclass
-class EventDongPayload(EventPayloadBase):
+class EventDongPayload:
     data: Optional[str] = None
 
 
 @dataclass
-class EventErrorPayload(EventPayloadBase):
+class EventErrorPayload:
     data: str
 
 
 @dataclass
-class EventReadyPayload(EventPayloadBase):
+class EventReadyPayload:
     data: str
 
 
 @dataclass
-class EventResetPayload(EventPayloadBase):
+class EventResetPayload:
     data: str
 
 
 @dataclass
-class EventHeartbeatPayload(EventPayloadBase):
+class EventHeartbeatPayload:
     data: str
+
+
+EventAllPayload = Union[EventDongPayload, EventErrorPayload, EventFriendshipPayload, EventHeartbeatPayload,
+                        EventLoginPayload, EventLogoutPayload, EventMessagePayload, EventReadyPayload,
+                        EventResetPayload, EventRoomInvitePayload, EventRoomJoinPayload, EventRoomLeavePayload,
+                        EventRoomTopicPayload, EventScanPayload]

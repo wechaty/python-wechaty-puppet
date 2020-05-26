@@ -32,6 +32,8 @@ class MiniProgramPayload:
     app_id: Optional[str] = None
     description: Optional[str] = None
     page_path: Optional[str] = None
+    icon_url: Optional[str] = None
+    share_id: Optional[str] = None
     thumb_key: Optional[str] = None
     thumb_url: Optional[str] = None
     title: Optional[str] = None
