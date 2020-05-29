@@ -83,6 +83,8 @@ from .schemas.event import (
     EventErrorPayload
 )
 
+from .logger import get_logger
+
 __all__ = [
     'Puppet',
     'PuppetOptions',
@@ -130,6 +132,8 @@ __all__ = [
     'EventErrorPayload',
 
     'ImageType',
-    'EventType'
+    'EventType',
+
+    'get_logger'
 
 ]
