@@ -48,7 +48,7 @@ def get_logger(name: str) -> logging.Logger:
         filepath = os.environ[WECHATY_LOG_FILE_KEY]
     else:
         base_dir = './logs'
-        if os.path.exists(base_dir):
+        if not os.path.exists(base_dir):
             os.mkdir(base_dir)
 
         time_now = datetime.now()
