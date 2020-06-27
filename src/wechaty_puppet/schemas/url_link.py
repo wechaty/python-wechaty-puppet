@@ -31,6 +31,6 @@ class UrlLinkPayload:
     """
     url: str
     title: Optional[str] = None
-    thumbnail_url: Optional[str] = None
+    thumbnailUrl: Optional[str] = None
     description: Optional[str] = None
 
