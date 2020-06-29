@@ -38,19 +38,19 @@ class FileBoxType(Enum):
     """
     option config for file box
     """
-    Unknown = 0,
+    Unknown = 0
 
     # Serializable by toJSON()
 
-    Base64 = 1,
-    Url = 2,
-    QRCode = 3,
+    Base64 = 1
+    Url = 2
+    QRCode = 3
 
     # Not serializable by toJSON()
     # Need to convert to FileBoxType.Base64 before call toJSON()
-    Buffer = 4,
-    File = 5,
-    Stream = 6,
+    Buffer = 4
+    File = 5
+    Stream = 6
 
 
 @dataclass

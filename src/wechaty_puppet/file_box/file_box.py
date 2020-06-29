@@ -8,13 +8,16 @@ import json
 import requests
 import os
 from collections import defaultdict
-import mimetypes
+
 from typing import (
     Type,
     Optional,
     Union,
-    Dict, Any
 )
+
+import qrcode   # type: ignore
+
+from .utils import extract_file_name_from_url, data_url_to_base64
 
 from .type import (
     FileBoxOptionsFile,
@@ -43,14 +46,12 @@ class FileBox:
 
     def __init__(self, options: FileBoxOptionsBase):
 
-
-
         self.mimeType: Optional[str] = None
 
         self._metadata: Metadata = defaultdict()
 
         self.name = options.name
-        self.boxType:int = options.type.value[0]
+        self.boxType: int = options.type.value
 
         if isinstance(options, FileBoxOptionsFile):
             self.localPath = options.path
@@ -92,9 +93,40 @@ class FileBox:
         """get filebox type"""
         return FileBoxType(self.boxType)
 
-    def sync_remote_name(self):
-        """sync remote name"""
-        pass
+    async def ready(self):
+        """
+        sync the name from remote
+        """
+        if self.type() == FileBoxType.Url:
+            await self.sync_remote_name()
+
+    async def sync_remote_name(self):
+        """sync remote name
+        refer : https://developer.mozilla.org/en-US/docs/Web/HTTP/
+                Headers/Content-Disposition
+
+                Content-Disposition: attachment; filename="cool.html"
+
+        # wujingjing comment 2020-6-29:  according the implementation of
+            file-box: https://github.com/huan/file-box/blob/e42d7207bb1cf5
+                b76afb8ead6f72715f4a197b35/src/misc.ts#L66
+
+            headers in requests package doesn't contains attribute:
+                content-disposition, so we need to change the way to sync
+                file-name from url type
+
+            I find the better way to extract file name from url:
+                https://stackoverflow.com/questions/18727347/how-to-extract-a-
+                filename-from-a-url-append-a-word-to-it/18727481#18727481
+        """
+        if self.boxType is not FileBoxType.Url:
+            raise TypeError('type <%d> is not remote', self.boxType)
+
+        if not hasattr(self, 'remoteUrl'):
+            raise AttributeError('not have attribute url')
+
+        url = getattr(self, 'remoteUrl')
+        self.name, self.mimeType = extract_file_name_from_url(url)
 
     def to_json_str(self) -> str:
         """
@@ -109,12 +141,39 @@ class FileBox:
         data = json.dumps(json_data, cls=FileBoxEncoder, indent=4)
         return data
 
-    def to_file(self, file_path: str) -> None:
+    async def to_file(self, file_path: Optional[str] = None,
+                      overwrite: bool = False):
         """
         save the content to the file
         :return:
         """
-        raise NotImplementedError
+        if self.type() == FileBoxType.Url:
+            if not self.mimeType or not self.name:
+                await self.sync_remote_name()
+
+        file_path = self.name if file_path is None else file_path
+
+        if os.path.exists(file_path) and not overwrite:
+            raise FileExistsError(f'FileBox.toFile(${file_path}): file exist. '
+                                  f'use FileBox.toFile(${file_path}, true) to '
+                                  f'force overwrite.')
+        file_box_type = self.type()
+
+        if file_box_type == FileBoxType.Buffer:
+            with open(file_path, 'wb+', encoding='utf-8') as f:
+                f.write(self.buffer)
+
+        elif file_box_type == FileBoxType.Url:
+            with open(file_path, 'wb+', encoding='utf-8') as text_io:
+                # get the content of the file from url
+                res = requests.get(self.remoteUrl)
+                text_io.write(res.content)
+
+        elif file_box_type == FileBoxType.QRCode:
+            with open(file_path, 'wb+', encoding='utf-u') as f:
+                # create the qr_code image file
+                img = qrcode.make(self.qrCode)
+                img.get_image().save(f)
 
     def to_base64(self) -> str:
         """
@@ -172,20 +231,29 @@ class FileBox:
         return cls(options)
 
     @classmethod
-    def from_base64(cls: Type[FileBox], base64: str, name: Optional[str] = None
-                    ) -> FileBox:
+    def from_base64(cls: Type[FileBox], base64: str, name: str) -> FileBox:
         """
         create file-box from base64 str
+
+        refer to the file-box implementation, name field is required.
 
         :param base64:
             example data: data:image/png;base64,${base64Text}
         :param name: name the file name of the base64 data
         :return:
         """
-        base64_name = 'default_file_name' if name is None else name
-        # TODO -> file name is required ?
-        options = FileBoxOptionsBase64(name=base64_name, base64=base64)
+        options = FileBoxOptionsBase64(base64=base64, name=name)
         return FileBox(options)
+
+    @classmethod
+    def from_data_url(cls: Type[FileBox], data_url: str, name: str) -> FileBox:
+        """
+        example value: dataURL: `data:image/png;base64,${base64Text}`,
+        """
+        return cls.from_base64(
+            data_url_to_base64(data_url),
+            name
+        )
 
     @classmethod
     def from_qr_code(cls: Type[FileBox], qr_code: str) -> FileBox:
@@ -206,4 +274,43 @@ class FileBox:
         :param obj:
         :return:
         """
-        raise NotImplementedError
+        if isinstance(obj, str):
+            json_obj = json.loads(obj)
+        else:
+            json_obj = obj
+
+        # original box_type field name is boxType
+        if 'boxType' not in json_obj:
+            raise Exception('boxType field must be required')
+        # assert that boxType value must match the value of FileBoxType values
+
+        if json_obj['boxType'] == FileBoxType.Base64.value:
+            file_box = FileBox.from_base64(
+                base64=json_obj['base64'],
+                name=json_obj['name']
+            )
+        elif json_obj['boxType'] == FileBoxType.Url.value:
+            file_box = FileBox.from_url(
+                url=json_obj['remoteUrl'],
+                name=json_obj['name']
+            )
+        elif json_obj['boxType'] == FileBoxType.QRCode.value:
+            file_box = FileBox.from_qr_code(
+                qr_code=json_obj['qrCode']
+            )
+        else:
+            raise ValueError('unknown file_box json object %s',
+                             json.dumps(json_obj))
+
+        if 'metadata' not in json_obj:
+            json_obj['metadata'] = {}
+        elif not isinstance(json_obj['metadata'], dict):
+            raise AttributeError('metadata field is not dict type')
+
+        file_box.metadata = json_obj['metadata']
+
+        return file_box
+
+
+
+
