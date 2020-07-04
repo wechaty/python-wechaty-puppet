@@ -119,8 +119,10 @@ class FileBox:
                 https://stackoverflow.com/questions/18727347/how-to-extract-a-
                 filename-from-a-url-append-a-word-to-it/18727481#18727481
         """
-        if self.boxType is not FileBoxType.Url:
-            raise TypeError('type <%d> is not remote', self.boxType)
+        file_box_type = self.type()
+        if file_box_type != FileBoxType.Url:
+            raise TypeError('type <{0}> is not remote'.format(
+                file_box_type.name))
 
         if not hasattr(self, 'remoteUrl'):
             raise AttributeError('not have attribute url')
