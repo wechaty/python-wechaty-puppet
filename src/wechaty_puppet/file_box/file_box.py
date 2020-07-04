@@ -162,17 +162,17 @@ class FileBox:
         file_box_type = self.type()
 
         if file_box_type == FileBoxType.Buffer:
-            with open(file_path, 'wb+', encoding='utf-8') as f:
+            with open(file_path, 'wb+') as f:
                 f.write(self.buffer)
 
         elif file_box_type == FileBoxType.Url:
-            with open(file_path, 'wb+', encoding='utf-8') as text_io:
+            with open(file_path, 'wb+') as text_io:
                 # get the content of the file from url
                 res = requests.get(self.remoteUrl)
                 text_io.write(res.content)
 
         elif file_box_type == FileBoxType.QRCode:
-            with open(file_path, 'wb+', encoding='utf-u') as f:
+            with open(file_path, 'wb+') as f:
                 # create the qr_code image file
                 img = qrcode.make(self.qrCode)
                 img.get_image().save(f)
