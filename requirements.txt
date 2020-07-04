@@ -1,3 +1,4 @@
 pyee
 requests
 chatie-grpc
+qrcode
