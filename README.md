@@ -1,4 +1,4 @@
-# wechaty-puppet [![Python 3.7](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/release/python-370/) [![PyPI GitHub Actions](https://github.com/wechaty/python-wechaty-puppet/workflows/PyPI/badge.svg)](https://github.com/wechaty/python-wechaty-puppet/actions?query=workflow%3APyPI)
+# wechaty-puppet [![Python 3.7](https://img.shields.io/badge/python-3.7+-blue.svg)](https://www.python.org/downloads/release/python-370/) [![PyPI Version](https://img.shields.io/pypi/v/wechaty-puppet?color=blue)](https://pypi.org/project/wechaty/) [![PyPI GitHub Actions](https://github.com/wechaty/python-wechaty-puppet/workflows/PyPI/badge.svg)](https://github.com/wechaty/python-wechaty-puppet/actions?query=workflow%3APyPI)
 
 [![Powered by Wechaty](https://img.shields.io/badge/Powered%20By-Wechaty-brightgreen.svg)](https://github.com/wechaty/wechaty)
 
