@@ -3,7 +3,7 @@ doc
 """
 
 # message module
-from .schemas.types import (   # type: ignore
+from .schemas.types import (  # type: ignore
 
     # Message
     MessageType,
@@ -76,11 +76,18 @@ from .schemas.event import (
     EventRoomJoinPayload,
     EventRoomInvitePayload,
 
-
     EventMessagePayload,
     EventHeartbeatPayload,
     EventFriendshipPayload,
     EventErrorPayload
+)
+
+from .exceptions import (
+    WechatyPuppetError,
+    WechatyPuppetConfigurationError,
+    WechatyPuppetGrpcError,
+    WechatyPuppetOperationError,
+    WechatyPuppetPayloadError,
 )
 
 from .logger import get_logger
@@ -133,6 +140,12 @@ __all__ = [
 
     'ImageType',
     'EventType',
+
+    'WechatyPuppetError',
+    'WechatyPuppetConfigurationError',
+    'WechatyPuppetGrpcError',
+    'WechatyPuppetOperationError',
+    'WechatyPuppetPayloadError',
 
     'get_logger'
 
