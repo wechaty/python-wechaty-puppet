@@ -21,46 +21,50 @@ limitations under the License.
 from __future__ import annotations
 import logging
 import os
+from datetime import datetime
+
+
+WECHATY_LOG_KEY = 'WECHATY_LOG'
+WECHATY_LOG_FILE_KEY = 'WECHATY_LOG_FILE'
 
 
 def get_logger(name: str) -> logging.Logger:
     """
     configured Loggers
     """
-    WECHATY_LOG_KEY = 'WECHATY_LOG'
+    WECHATY_LOG = os.environ.get(WECHATY_LOG_KEY, 'INFO')
 
-    if WECHATY_LOG_KEY in os.environ:
-        WECHATY_LOG = os.environ[WECHATY_LOG_KEY].upper()
+    log_formatter = logging.Formatter(
+        fmt='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+    # create logger and set level to debug
+    logger = logging.getLogger(name)
+    logger.handlers = []
+    logger.setLevel(logging.DEBUG)
+    logger.propagate = False
+
+    # create file handler and set level to debug
+    if WECHATY_LOG_FILE_KEY in os.environ:
+        filepath = os.environ[WECHATY_LOG_FILE_KEY]
     else:
-        WECHATY_LOG = 'INFO'
+        base_dir = './logs'
+        if not os.path.exists(base_dir):
+            os.mkdir(base_dir)
 
-    LOGGER_LEVELS = [
-        'CRITICAL',
-        'ERROR',
-        'WARNING',
-        'INFO',
-        'DEBUG',
-    ]
+        time_now = datetime.now()
+        time_format = '%Y-%m-%d-%H-%M'
 
-    if WECHATY_LOG in LOGGER_LEVELS:
-        level = getattr(logging, WECHATY_LOG, logging.INFO)
-    else:
-        level = logging.INFO
+        filepath = f'{base_dir}/log-{time_now.strftime(time_format)}.txt'
 
-    _log = logging.getLogger(name)
-    _log.setLevel(level)
+    file_handler = logging.FileHandler(filepath, 'a')
+    file_handler.setLevel(logging.DEBUG)
+    file_handler.setFormatter(log_formatter)
+    logger.addHandler(file_handler)
 
-    handler = logging.StreamHandler()
-    handler.setLevel(logging.DEBUG)
+    # create console handler and set level to info
+    console_handler = logging.StreamHandler()
+    console_handler.setLevel(WECHATY_LOG)
+    console_handler.setFormatter(log_formatter)
+    logger.addHandler(console_handler)
 
-    # create formatter
-    formatter = logging.Formatter(
-        '%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-
-    # add formatter to ch
-    handler.setFormatter(formatter)
-
-    # add ch to logger
-    _log.addHandler(handler)
-
-    return _log
+    return logger

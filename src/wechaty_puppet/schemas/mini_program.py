@@ -29,10 +29,12 @@ class MiniProgramPayload:
     """
     mini_program payload
     """
-    app_id: Optional[str] = None
+    appid: Optional[str] = None
     description: Optional[str] = None
-    page_path: Optional[str] = None
-    thumb_key: Optional[str] = None
-    thumb_url: Optional[str] = None
+    pagePath: Optional[str] = None
+    thumbKey: Optional[str] = None
+    iconUrl: Optional[str] = None
+    thumbUrl: Optional[str] = None
+    shareId: Optional[str] = None
     title: Optional[str] = None
-    user_name: Optional[str] = None
+    username: Optional[str] = None

@@ -479,7 +479,7 @@ class Puppet:
         """
         raise NotImplementedError
 
-    async def login(self):
+    async def login(self, user_id: str):
         """
         login the account
         :return:
