@@ -4,7 +4,7 @@ docstring
 from __future__ import annotations
 
 import json
-
+import base64
 import requests
 import os
 from collections import defaultdict
@@ -176,6 +176,11 @@ class FileBox:
                 # create the qr_code image file
                 img = qrcode.make(self.qrCode)
                 img.get_image().save(f)
+
+        elif file_box_type == FileBoxType.Base64:
+            data = base64.b64decode(self.base64)
+            with open(file_path, 'wb') as f:
+                f.write(data)
 
     def to_base64(self) -> str:
         """
