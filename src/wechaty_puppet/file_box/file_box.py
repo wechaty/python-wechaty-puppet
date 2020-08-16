@@ -240,7 +240,7 @@ class FileBox:
         return cls(options)
 
     @classmethod
-    def from_base64(cls: Type[FileBox], base64: str, name: str) -> FileBox:
+    def from_base64(cls: Type[FileBox], base64: bytes, name: str) -> FileBox:
         """
         create file-box from base64 str
 
@@ -260,7 +260,7 @@ class FileBox:
         example value: dataURL: `data:image/png;base64,${base64Text}`,
         """
         return cls.from_base64(
-            data_url_to_base64(data_url),
+            str.encode(data_url_to_base64(data_url)),
             name
         )
 
