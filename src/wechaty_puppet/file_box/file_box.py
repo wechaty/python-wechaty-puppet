@@ -187,8 +187,9 @@ class FileBox:
                 img.get_image().save(f)
 
         elif file_box_type == FileBoxType.Base64:
-            with open(file_path, 'wb+') as f:
-                f.write(self.base64)
+            data = base64.b64decode(self.base64)
+            with open(file_path, 'wb') as f:
+                f.write(data)
 
     def to_base64(self) -> str:
         """
