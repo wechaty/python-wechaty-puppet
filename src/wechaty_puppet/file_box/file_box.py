@@ -4,7 +4,7 @@ docstring
 from __future__ import annotations
 
 import json
-
+import base64
 import requests
 import os
 import base64
