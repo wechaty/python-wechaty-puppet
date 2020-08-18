@@ -30,6 +30,8 @@ from .type import (
     FileBoxOptionsBase,
     Metadata, FileBoxType)
 
+from wechaty_puppet.exceptions import WechatyPuppetConfigurationError
+
 
 class FileBoxEncoder(json.JSONEncoder):
     def default(self, obj):
@@ -72,7 +74,13 @@ class FileBox:
             self.qrCode = options.qr_code
 
         elif isinstance(options, FileBoxOptionsBase64):
-            self.base64 = options.base64
+            if isinstance(options.base64, str):
+                self.base64 = str.encode(options.base64)
+            elif isinstance(options.base64, bytes):
+                self.base64 = options.base64
+            else:
+                raise WechatyPuppetConfigurationError(
+                    f'Base64 File Data Type is invalid, str/bytes is supported')
 
     @property
     def metadata(self) -> dict:
@@ -150,7 +158,8 @@ class FileBox:
         save the content to the file
         :return:
         """
-        if self.type() == FileBoxType.Url:
+        file_box_type = self.type()
+        if file_box_type == FileBoxType.Url:
             if not self.mimeType or not self.name:
                 await self.sync_remote_name()
 
@@ -160,7 +169,6 @@ class FileBox:
             raise FileExistsError(f'FileBox.toFile(${file_path}): file exist. '
                                   f'use FileBox.toFile(${file_path}, true) to '
                                   f'force overwrite.')
-        file_box_type = self.type()
 
         if file_box_type == FileBoxType.Buffer:
             with open(file_path, 'wb+') as f:
@@ -177,6 +185,10 @@ class FileBox:
                 # create the qr_code image file
                 img = qrcode.make(self.qrCode)
                 img.get_image().save(f)
+
+        elif file_box_type == FileBoxType.Base64:
+            with open(file_path, 'wb+') as f:
+                f.write(self.base64)
 
     def to_base64(self) -> str:
         """
