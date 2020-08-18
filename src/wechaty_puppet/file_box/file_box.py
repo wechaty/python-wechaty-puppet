@@ -7,6 +7,7 @@ import json
 import base64
 import requests
 import os
+import base64
 from collections import defaultdict
 
 from typing import (
@@ -204,18 +205,24 @@ class FileBox:
         return cls(options)
 
     @classmethod
-    def from_file(cls: Type[FileBox], path: str, name: Optional[str]
+    def from_file(cls: Type[FileBox], path: str, name: Optional[str] = None
                   ) -> FileBox:
         """
         create file-box from file
+
+        2020.08.16 -> hostie-server don't support file type, so we will change
+            this FileBox type to base64 default
         """
         if not os.path.exists(path):
             raise FileNotFoundError(f'{path} file not found')
         if name is None:
             name = os.path.basename(path)
 
-        options = FileBoxOptionsFile(name=name, path=path)
-        return cls(options)
+        with open(path, 'rb') as f:
+            content = base64.b64encode(f.read())
+
+        # to make `from_file` run well temporary
+        return cls.from_base64(base64=content, name=name)
 
     @classmethod
     def from_stream(cls: Type[FileBox], stream: bytes, name: str) -> FileBox:
@@ -238,7 +245,7 @@ class FileBox:
         return cls(options)
 
     @classmethod
-    def from_base64(cls: Type[FileBox], base64: str, name: str) -> FileBox:
+    def from_base64(cls: Type[FileBox], base64: bytes, name: str) -> FileBox:
         """
         create file-box from base64 str
 
@@ -258,7 +265,7 @@ class FileBox:
         example value: dataURL: `data:image/png;base64,${base64Text}`,
         """
         return cls.from_base64(
-            data_url_to_base64(data_url),
+            str.encode(data_url_to_base64(data_url)),
             name
         )
 

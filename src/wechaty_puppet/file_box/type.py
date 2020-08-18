@@ -112,5 +112,5 @@ class FileBoxOptionsBase64(FileBoxOptionsBase):
     """
     base64 file-box options
     """
-    base64: str = ''
+    base64: bytes = b''
     type: FileBoxType = FileBoxType.Base64
