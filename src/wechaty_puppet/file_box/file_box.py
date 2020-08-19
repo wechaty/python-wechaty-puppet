@@ -74,6 +74,7 @@ class FileBox:
             self.qrCode = options.qr_code
 
         elif isinstance(options, FileBoxOptionsBase64):
+            self.base64: bytes
             if isinstance(options.base64, str):
                 self.base64 = str.encode(options.base64)
             elif isinstance(options.base64, bytes):
