@@ -82,7 +82,7 @@ class EventRoomJoinPayload(EventPayloadBase):
     invited_ids: List[str]
     inviter_id: str
     room_id: str
-    time_stamp: float
+    timestamp: float
 
 @dataclass
 class EventRoomLeavePayload(EventPayloadBase):
@@ -90,7 +90,7 @@ class EventRoomLeavePayload(EventPayloadBase):
     removed_ids: List[str]
     remover_id: str
     room_id: str
-    time_stamp: float
+    timestamp: float
 
 
 @dataclass
@@ -99,7 +99,7 @@ class EventRoomTopicPayload(EventPayloadBase):
     new_topic: str
     old_topic: str
     room_id: str
-    time_stamp: float
+    timestamp: float
 
 
 @dataclass

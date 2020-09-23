@@ -46,7 +46,7 @@ class Watchdog(AsyncIOEventEmitter):
         """
         init the watch dog
         """
-        super(Watchdog, self).__init__()
+        super().__init__()
         self._last_feed: Optional[datetime] = None
         self._last_food: Optional[WatchdogFood] = None
         self.default_timeout: int = default_timeout
