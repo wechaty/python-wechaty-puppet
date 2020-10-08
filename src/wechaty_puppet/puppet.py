@@ -52,17 +52,18 @@ from wechaty_puppet.schemas.types import (   # type: ignore
     RoomPayload,
     RoomMemberPayload,
 
-    RoomInvitationPayload
+    RoomInvitationPayload,
+
+    PayloadType
 
 )
 
 
 class Puppet:
     """
-    puppet interface class
+    puppet interface class, which is the abstract of puppet implementation.
 
-    TODO -> StateSwitch schema
-
+    python-wechaty-puppet-XX can be all of the protocol of IM software.
     """
 
     def __init__(self, options: PuppetOptions, name: str = 'puppet'):
@@ -483,5 +484,11 @@ class Puppet:
         """
         login the account
         :return:
+        """
+        raise NotImplementedError
+
+    async def dirty_payload(self, payload_type: PayloadType, payload_id: str):
+        """
+        mark the payload dirty status, and remove
         """
         raise NotImplementedError
