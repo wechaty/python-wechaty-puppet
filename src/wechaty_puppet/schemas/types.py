@@ -49,6 +49,9 @@ from chatie_grpc.wechaty import (   # type: ignore
 
     # Event
     EventType,
+
+    # Payload type
+    PayloadType
 )
 
 
@@ -70,5 +73,7 @@ __all__ = [
 
     'ImageType',
 
-    'EventType'
+    'EventType',
+
+    'PayloadType'
 ]
