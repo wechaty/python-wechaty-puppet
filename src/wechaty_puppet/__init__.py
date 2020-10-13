@@ -32,6 +32,9 @@ from .schemas.types import (  # type: ignore
 
     # Event
     EventType,
+
+    # PayloadType
+    PayloadType
 )
 
 from .puppet import (
@@ -140,6 +143,7 @@ __all__ = [
 
     'ImageType',
     'EventType',
+    'PayloadType',
 
     'WechatyPuppetError',
     'WechatyPuppetConfigurationError',
