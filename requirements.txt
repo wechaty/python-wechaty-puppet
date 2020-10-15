@@ -1,5 +1,4 @@
 pyee
 requests
-chatie-grpc>=0.17.dev4
+chatie-grpc==0.17.dev4
 qrcode
-pylru
