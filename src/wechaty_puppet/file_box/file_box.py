@@ -68,7 +68,7 @@ class FileBox:
 
         elif isinstance(options, FileBoxOptionsStream):
             # TODO -> need to get into detail for stream sending
-            pass
+            self.stream = options.stream
 
         elif isinstance(options, FileBoxOptionsQrCode):
             self.qrCode = options.qr_code
@@ -191,6 +191,10 @@ class FileBox:
             data = base64.b64decode(self.base64)
             with open(file_path, 'wb') as f:
                 f.write(data)
+
+        elif file_box_type == FileBoxType.Stream:
+            with open(file_path, 'wb+') as f:
+                f.write(self.stream)
 
     def to_base64(self) -> str:
         """
