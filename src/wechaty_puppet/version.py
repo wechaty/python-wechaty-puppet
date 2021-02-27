@@ -1,2 +1,2 @@
 """Auto-generated. Do NOT edit."""
-VERSION = '0.3.1'
+VERSION = '0.3.2'
