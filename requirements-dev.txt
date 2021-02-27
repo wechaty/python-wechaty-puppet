@@ -7,5 +7,4 @@ pylint-quotes
 pytest
 pytype
 semver
-pyee
-requests
+wechaty-grpc>=0.20
