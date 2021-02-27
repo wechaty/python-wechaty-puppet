@@ -20,7 +20,7 @@ limitations under the License.
 """
 from __future__ import annotations
 
-from chatie_grpc.wechaty import (   # type: ignore
+from wechaty_grpc.wechaty import (   # type: ignore
 
     # Message
     MessageType,
