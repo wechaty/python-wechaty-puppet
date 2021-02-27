@@ -31,4 +31,3 @@ def test_url_parse_with_():
     assert extracted_file_name == 'aHR0cHM6Ly9pbWdrci5jbi1iai51ZmlsZW9zLmNv' \
                                   'bS9lMGZlYzAxNC0yNjkxLTRkZmUtOTc5NS1iNGU2' \
                                   'NzdmYTE2ZTcucG5n.png'
-
