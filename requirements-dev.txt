@@ -7,4 +7,4 @@ pylint-quotes
 pytest
 pytype
 semver
-wechaty-grpc>=0.20
+wechaty-grpc>=0.20.17
