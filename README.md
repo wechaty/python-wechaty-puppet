@@ -2,7 +2,7 @@
 
 [![Powered by Wechaty](https://img.shields.io/badge/Powered%20By-Wechaty-brightgreen.svg)](https://github.com/wechaty/wechaty)
 
-![chatie puppet](https://wechaty.github.io/wechaty-puppet/images/puppet-logo.jpg)
+![wechaty puppet](https://wechaty.github.io/wechaty-puppet/images/puppet-logo.jpg)
 
 > Picture Credit: [https://www.shareicon.net](https://www.shareicon.net/puppet-marionette-puppeteer-puppet-variant-marionette-variant-665400)
 

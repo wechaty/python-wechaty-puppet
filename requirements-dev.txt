@@ -7,6 +7,7 @@ pylint-quotes
 pytest
 pytype
 semver
+wechaty-grpc>=0.20.19
 pyee
 requests
 pre-commit
