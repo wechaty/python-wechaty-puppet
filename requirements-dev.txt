@@ -9,3 +9,4 @@ pytype
 semver
 pyee
 requests
+pre-commit

@@ -4,7 +4,7 @@
 # 	Author: Huan LI <zixia@zixia.net> git.io/zixia
 #
 
-SOURCE_GLOB=$(wildcard bin/*.py src/**/*.py tests/**/*.py examples/*.py)
+SOURCE_GLOB=$(wildcard bin/*.py src/**/*.py tests/**/*.py)
 
 #
 # Huan(202003)
@@ -55,10 +55,30 @@ pytype:
 	# pytype src/ --disable=import-error,pyi-error
 	echo "skip pytype for not support Python 3.7 (yet, for temporary)"
 
+.PHONY: uninstall-git-hook
+uninstall-git-hook:
+	pre-commit clean
+	pre-commit gc
+	pre-commit uninstall
+	pre-commit uninstall --hook-type pre-push
+
+.PHONY: install-git-hook
+install-git-hook:
+	# cleanup existing pre-commit configuration (if any)
+	pre-commit clean
+	pre-commit gc
+	# setup pre-commit
+	# Ensures pre-commit hooks point to latest versions
+	pre-commit autoupdate
+	pre-commit install
+	pre-commit install --overwrite --hook-type pre-push
+
 .PHONY: install
 install:
 	pip3 install -r requirements.txt
 	pip3 install -r requirements-dev.txt
+	# install pre-commit related hook scripts
+	$(MAKE) install-git-hook
 
 .PHONY: pytest
 pytest:
@@ -85,17 +105,15 @@ dist:
 publish:
 	PATH=~/.local/bin:${PATH} twine upload dist/*
 
-.PHONY: demo
-demo:
-	python3 examples/demo.py
-
 .PHONY: version
 version:
 	@newVersion=$$(awk -F. '{print $$1"."$$2"."$$3+1}' < VERSION) \
 		&& echo $${newVersion} > VERSION \
-		&& echo '"""Auto-generated. Do NOT edit."""' > src/wechaty_puppet/version.py \
-		&& echo VERSION = \'$${newVersion}\' >> src/wechaty_puppet/version.py \
-		&& git add VERSION src/wechaty_puppet/version.py \
-		&& git commit -m "$${newVersion}" > /dev/null \
+		&& git add VERSION \
+		&& git commit -m "🔥 update version to $${newVersion}" > /dev/null \
 		&& git tag "v$${newVersion}" \
 		&& echo "Bumped version to $${newVersion}"
+
+.PHONY: deploy-version
+deploy-version:
+	echo "VERSION = '$$(cat VERSION)'" > src/wechaty_puppet/version.py
