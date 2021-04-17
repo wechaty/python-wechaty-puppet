@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import os
-from src.wechaty_puppet.logger import _get_logger_level
+from wechaty_puppet.logger import _get_logger_level
 
 
 def test_get_log_level_info():
