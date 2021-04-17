@@ -28,11 +28,33 @@ WECHATY_LOG_KEY = 'WECHATY_LOG'
 WECHATY_LOG_FILE_KEY = 'WECHATY_LOG_FILE'
 
 
+def _get_logger_level() -> str:
+    """refer to : https://docs.python.org/3/library/logging.html#logging-levels
+
+    fix: https://github.com/wechaty/python-wechaty/issues/192
+
+    According to our Wechaty Specification <https://wechaty.js.org/docs/specs/wechaty>:
+    The `WECHATY_LOG` should support the values of `silly`, `verbose`, `info`, `warn`, `silent`
+    All Polyglot Wechaty should at least support the above names as an alias.
+    Link to https://github.com/wechaty/wechaty/issues/2167
+    """
+    level_map = {
+        'silly': 'CRITICAL',
+        'verbose': 'INFO',
+        'info': 'INFO',
+        'warn': 'WARNING',
+        'error': 'ERROR',
+        'silent': 'NOTSET'
+    }
+    level: str = os.environ.get(WECHATY_LOG_KEY, 'INFO')
+    return level_map.get(level, level)
+
+
 def get_logger(name: str) -> logging.Logger:
     """
     configured Loggers
     """
-    WECHATY_LOG = os.environ.get(WECHATY_LOG_KEY, 'INFO')
+    WECHATY_LOG = _get_logger_level()
 
     log_formatter = logging.Formatter(
         fmt='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
