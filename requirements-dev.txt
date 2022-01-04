@@ -11,3 +11,4 @@ wechaty-grpc>=0.20.19
 pyee
 requests
 pre-commit
+types-requests
