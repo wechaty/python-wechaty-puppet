@@ -20,7 +20,7 @@ all : clean lint
 
 .PHONY: clean
 clean:
-	rm -fr dist/*
+	rm -fr dist/* src/wechaty_puppet/*.pyi src/wechaty_puppet/**/*.pyi
 
 .PHONY: lint
 lint: pylint pycodestyle flake8 mypy pytype
@@ -99,6 +99,7 @@ run:
 
 .PHONY: dist
 dist:
+	make clean
 	make stub
 	python3 setup.py sdist bdist_wheel
 

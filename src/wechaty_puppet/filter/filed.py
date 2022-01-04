@@ -98,7 +98,7 @@ class TimeStampField(BaseField, timedelta):
         super().__init__()
 
 
-class BoolField(BaseField, bool):
+class BoolField(BaseField):
     """
     bool filed for field
     """
