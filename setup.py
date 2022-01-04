@@ -53,6 +53,7 @@ def setup() -> None:
         url='https://github.com/wechaty/python-wechaty-puppet',
         packages=setuptools.find_packages('src'),
         install_requires=get_install_requires(),
+        package_data={'wechaty_puppet': ['**/*.pyi', '*.pyi']},
         package_dir={'': 'src'},
         classifiers=[
             'Programming Language :: Python :: 3.7',

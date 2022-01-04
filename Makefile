@@ -99,6 +99,7 @@ run:
 
 .PHONY: dist
 dist:
+	make stub
 	python3 setup.py sdist bdist_wheel
 
 .PHONY: publish
@@ -117,3 +118,8 @@ version:
 .PHONY: deploy-version
 deploy-version:
 	echo "VERSION = '$$(cat VERSION)'" > src/wechaty_puppet/version.py
+
+.PHONY: stub
+stub:
+	echo "generating stub file for static code type hinting ..."
+	stubgen ./src -o ./src
