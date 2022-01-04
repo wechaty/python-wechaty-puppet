@@ -129,4 +129,6 @@ dmypy.json
 .pyre/
 .pytype/
 .idea/
-**/*.pyi
+src/*.pyi
+src/wechaty_puppet/*.pyi
+src/wechaty_puppet/**/*.pyi
