@@ -62,7 +62,7 @@ def get_logger(name: str) -> logging.Logger:
     # create logger and set level to debug
     logger = logging.getLogger(name)
     logger.handlers = []
-    logger.setLevel(logging.DEBUG)
+    logger.setLevel(WECHATY_LOG)
     logger.propagate = False
 
     # create file handler and set level to debug
@@ -79,7 +79,7 @@ def get_logger(name: str) -> logging.Logger:
         filepath = f'{base_dir}/log-{time_now.strftime(time_format)}.txt'
 
     file_handler = logging.FileHandler(filepath, 'a', encoding='utf-8')
-    file_handler.setLevel(logging.DEBUG)
+    file_handler.setLevel(WECHATY_LOG)
     file_handler.setFormatter(log_formatter)
     logger.addHandler(file_handler)
 
