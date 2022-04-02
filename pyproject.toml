@@ -16,3 +16,4 @@ ignore_missing_imports = true
 markers = [
     "asyncio"
 ]
+pythonpath = "src"

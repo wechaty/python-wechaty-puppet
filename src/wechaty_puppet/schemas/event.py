@@ -21,8 +21,13 @@ limitations under the License.
 from __future__ import annotations
 
 from enum import Enum
-from dataclasses import dataclass
-from typing import List, Optional
+from dataclasses import Field, dataclass, fields, is_dataclass, field
+from typing import Any, Dict, List, Optional
+
+from wechaty_puppet.logger import get_logger
+from wechaty_puppet.schemas.base import BaseDataClass
+
+logger = get_logger("WechatyPuppet.Schemas.Event")
 
 
 class ScanStatus(Enum):
@@ -37,29 +42,24 @@ class ScanStatus(Enum):
     Timeout = 5
 
 
-@dataclass
-class EventPayloadBase:
-    pass
-
-
-@dataclass
-class EventFriendshipPayload(EventPayloadBase):
+@dataclass(init=False)
+class EventFriendshipPayload(BaseDataClass):
     friendship_id: str
 
 
-@dataclass
-class EventLoginPayload(EventPayloadBase):
+@dataclass(init=False)
+class EventLoginPayload(BaseDataClass):
     contact_id: str
 
 
-@dataclass
-class EventLogoutPayload(EventPayloadBase):
+@dataclass(init=False)
+class EventLogoutPayload(BaseDataClass):
     contact_id: str
     data: str
 
 
-@dataclass
-class EventMessagePayload(EventPayloadBase):
+@dataclass(init=False)
+class EventMessagePayload(BaseDataClass):
     message_id: str
     type: Optional[str] = None
     from_id: Optional[str] = None
@@ -71,21 +71,21 @@ class EventMessagePayload(EventPayloadBase):
     mention_ids: Optional[List[str]] = None
 
 
-@dataclass
-class EventRoomInvitePayload(EventPayloadBase):
+@dataclass(init=False)
+class EventRoomInvitePayload(BaseDataClass):
     room_invitation_id: str
 
 
-@dataclass
-class EventRoomJoinPayload(EventPayloadBase):
+@dataclass(init=False)
+class EventRoomJoinPayload(BaseDataClass):
     # TODO -> discuss name style
     invited_ids: List[str]
     inviter_id: str
     room_id: str
     timestamp: float
 
-@dataclass
-class EventRoomLeavePayload(EventPayloadBase):
+@dataclass(init=False)
+class EventRoomLeavePayload(BaseDataClass):
     # TODO -> discuss name style
     removed_ids: List[str]
     remover_id: str
@@ -93,8 +93,8 @@ class EventRoomLeavePayload(EventPayloadBase):
     timestamp: float
 
 
-@dataclass
-class EventRoomTopicPayload(EventPayloadBase):
+@dataclass(init=False)
+class EventRoomTopicPayload(BaseDataClass):
     changer_id: str
     new_topic: str
     old_topic: str
@@ -102,33 +102,33 @@ class EventRoomTopicPayload(EventPayloadBase):
     timestamp: float
 
 
-@dataclass
-class EventScanPayload(EventPayloadBase):
+@dataclass(init=False)
+class EventScanPayload(BaseDataClass):
     status: ScanStatus
     qrcode: Optional[str] = None
     data: Optional[str] = None
 
 
-@dataclass
-class EventDongPayload(EventPayloadBase):
+@dataclass(init=False)
+class EventDongPayload(BaseDataClass):
     data: Optional[str] = None
 
 
-@dataclass
-class EventErrorPayload(EventPayloadBase):
+@dataclass(init=False)
+class EventErrorPayload(BaseDataClass):
     data: str
 
 
-@dataclass
-class EventReadyPayload(EventPayloadBase):
+@dataclass(init=False)
+class EventReadyPayload(BaseDataClass):
     data: str
 
 
-@dataclass
-class EventResetPayload(EventPayloadBase):
+@dataclass(init=False)
+class EventResetPayload(BaseDataClass):
     data: str
 
 
-@dataclass
-class EventHeartbeatPayload(EventPayloadBase):
+@dataclass(init=False)
+class EventHeartbeatPayload(BaseDataClass):
     data: str

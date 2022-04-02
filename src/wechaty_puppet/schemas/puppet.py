@@ -23,9 +23,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional
 
+from wechaty_puppet.schemas.base import BaseDataClass
 
-@dataclass
-class PuppetOptions:
+
+@dataclass(init=False)
+class PuppetOptions(BaseDataClass):
     """
     option to config puppet
     """

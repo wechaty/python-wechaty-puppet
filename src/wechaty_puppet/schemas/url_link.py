@@ -23,9 +23,11 @@ from typing import Optional
 
 from dataclasses import dataclass
 
+from wechaty_puppet.schemas.base import BaseDataClass
 
-@dataclass
-class UrlLinkPayload:
+
+@dataclass(init=False)
+class UrlLinkPayload(BaseDataClass):
     """
     UrlLinkPayload object
     """

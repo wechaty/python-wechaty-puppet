@@ -28,11 +28,13 @@ from typing import Optional, Any
 
 from pyee import AsyncIOEventEmitter    # type: ignore
 
+from wechaty_puppet.schemas.base import BaseDataClass
+
 log = logging.getLogger('Watchdog')
 
 
-@dataclass
-class WatchdogFood:
+@dataclass(init=False)
+class WatchdogFood(BaseDataClass):
     """watchdog food interface"""
     timeout: int
     data: Optional[Any] = None

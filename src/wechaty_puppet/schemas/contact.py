@@ -18,13 +18,14 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 """
-from enum import Enum
 from typing import Optional
 from dataclasses import dataclass
 
+from wechaty_puppet.schemas.base import BaseDataClass
 
-@dataclass
-class ContactQueryFilter:
+
+@dataclass(init=False)
+class ContactQueryFilter(BaseDataClass):
     """
     alias can be regular expression
     """

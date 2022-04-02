@@ -23,9 +23,11 @@ from typing import Optional
 
 from dataclasses import dataclass
 
+from wechaty_puppet.schemas.base import BaseDataClass
 
-@dataclass
-class RoomMemberQueryFilter:
+
+@dataclass(init=False)
+class RoomMemberQueryFilter(BaseDataClass):
     """
     room member query filter
     """
@@ -34,8 +36,8 @@ class RoomMemberQueryFilter:
     contact_alias: Optional[str] = None
 
 
-@dataclass
-class RoomQueryFilter:
+@dataclass(init=False)
+class RoomQueryFilter(BaseDataClass):
     """
     query filter for room
     """

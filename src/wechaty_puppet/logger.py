@@ -21,11 +21,12 @@ limitations under the License.
 from __future__ import annotations
 import logging
 import os
-from datetime import datetime
+from typing import Optional
 
 
 WECHATY_LOG_KEY = 'WECHATY_LOG'
 WECHATY_LOG_FILE_KEY = 'WECHATY_LOG_FILE'
+DEFAULT_LOG_LEVEL = 'INFO'
 
 
 def _get_logger_level() -> str:
@@ -46,13 +47,29 @@ def _get_logger_level() -> str:
         'error': 'ERROR',
         'silent': 'NOTSET'
     }
-    level: str = os.environ.get(WECHATY_LOG_KEY, 'INFO')
-    return level_map.get(level, level)
+    level: str = os.environ.get(WECHATY_LOG_KEY, DEFAULT_LOG_LEVEL).lower()
+    if level not in level_map:
+        raise ValueError(
+            f'{WECHATY_LOG_KEY} should support the values of `silly`, '
+            '`verbose`, `info`, `warn`, `error`, `silent`'
+        )
+    return level_map.get(level, DEFAULT_LOG_LEVEL)
 
 
-def get_logger(name: str) -> logging.Logger:
-    """
-    configured Loggers
+def get_logger(name: Optional[str] = None, file: Optional[str] = None) -> logging.Logger:
+    """get the logger object
+
+    Args:
+        name (str): the logger name
+        file (Optional[str], optional): the log file name. Defaults to None.
+
+    Examples:
+        >>> logger = get_logger("WechatyPuppet")
+        >>> logger = get_logger("WechatyPuppet", file="wechaty-puppet.log")
+        >>> logger.info('log info ...')
+
+    Returns:
+        logging.Logger: the logger object
     """
     WECHATY_LOG = _get_logger_level()
 
@@ -66,22 +83,12 @@ def get_logger(name: str) -> logging.Logger:
     logger.propagate = False
 
     # create file handler and set level to debug
-    if WECHATY_LOG_FILE_KEY in os.environ:
-        filepath = os.environ[WECHATY_LOG_FILE_KEY]
-    else:
-        base_dir = './logs'
-        if not os.path.exists(base_dir):
-            os.mkdir(base_dir)
-
-        time_now = datetime.now()
-        time_format = '%Y-%m-%d-%H-%M'
-
-        filepath = f'{base_dir}/log-{time_now.strftime(time_format)}.txt'
-
-    file_handler = logging.FileHandler(filepath, 'a', encoding='utf-8')
-    file_handler.setLevel(WECHATY_LOG)
-    file_handler.setFormatter(log_formatter)
-    logger.addHandler(file_handler)
+    file = os.environ.get(WECHATY_LOG_FILE_KEY, file)
+    if file:
+        file_handler = logging.FileHandler(file, 'a', encoding='utf-8')
+        file_handler.setLevel(WECHATY_LOG)
+        file_handler.setFormatter(log_formatter)
+        logger.addHandler(file_handler)
 
     # create console handler and set level to info
     console_handler = logging.StreamHandler()

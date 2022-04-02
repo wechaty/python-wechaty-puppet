@@ -24,7 +24,10 @@ from dataclasses import dataclass
 from typing import Optional
 
 
-@dataclass
-class FriendshipSearchQueryFilter:
+from wechaty_puppet.schemas.base import BaseDataClass
+
+
+@dataclass(init=False)
+class FriendshipSearchQueryFilter(BaseDataClass):
     phone: Optional[str]
     weixin: Optional[str]

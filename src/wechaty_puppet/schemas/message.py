@@ -24,6 +24,8 @@ from typing import Optional
 
 from dataclasses import dataclass
 
+from wechaty_puppet.schemas.base import BaseDataClass
+
 from .types import MessageType
 
 
@@ -81,8 +83,8 @@ class WechatMessageType(Enum):
     Recalled = 10002
 
 
-@dataclass
-class MessagePayloadRoom:
+@dataclass(init=False)
+class MessagePayloadRoom(BaseDataClass):
 
     room_id: str
     from_id: Optional[str] = None
@@ -91,8 +93,8 @@ class MessagePayloadRoom:
     to_id: Optional[str] = None
 
 
-@dataclass
-class MessagePayloadTo:
+@dataclass(init=False)
+class MessagePayloadTo(BaseDataClass):
     from_id: str
 
     # if to is not set, then room must be set
@@ -101,8 +103,8 @@ class MessagePayloadTo:
     room_id: Optional[str] = None
 
 
-@dataclass
-class MessageQueryFilter:
+@dataclass(init=False)
+class MessageQueryFilter(BaseDataClass):
     from_id: Optional[str] = None
     id: Optional[str] = None
     room_id: Optional[str] = None

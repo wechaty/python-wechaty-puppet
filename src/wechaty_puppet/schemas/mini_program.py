@@ -23,9 +23,11 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional
 
+from wechaty_puppet.schemas.base import BaseDataClass
 
-@dataclass
-class MiniProgramPayload:
+
+@dataclass(init=False)
+class MiniProgramPayload(BaseDataClass):
     """
     mini_program payload
     """

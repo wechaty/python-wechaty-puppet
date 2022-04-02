@@ -132,3 +132,4 @@ dmypy.json
 src/*.pyi
 src/wechaty_puppet/*.pyi
 src/wechaty_puppet/**/*.pyi
+.vscode/

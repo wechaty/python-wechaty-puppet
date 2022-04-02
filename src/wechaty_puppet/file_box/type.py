@@ -21,7 +21,6 @@ limitations under the License.
 
 from __future__ import annotations
 
-import collections
 from enum import Enum
 from dataclasses import dataclass
 
@@ -29,6 +28,8 @@ from typing import (
     Optional,
     Any, Dict
 )
+
+from wechaty_puppet.schemas.base import BaseDataClass
 
 
 Metadata = Dict[str, Any]
@@ -53,13 +54,13 @@ class FileBoxType(Enum):
     Stream = 6
 
 
-@dataclass
-class FileBoxOptionsBase:
+@dataclass(init=False)
+class FileBoxOptionsBase(BaseDataClass):
     name: str
     type: FileBoxType
 
 
-@dataclass
+@dataclass(init=False)
 class FileBoxOptionsUrl(FileBoxOptionsBase):
     """
     url file-box options
@@ -69,7 +70,7 @@ class FileBoxOptionsUrl(FileBoxOptionsBase):
     type: FileBoxType = FileBoxType.Url
 
 
-@dataclass
+@dataclass(init=False)
 class FileBoxOptionsFile(FileBoxOptionsBase):
     """
     file file-box options
@@ -78,7 +79,7 @@ class FileBoxOptionsFile(FileBoxOptionsBase):
     type: FileBoxType = FileBoxType.File
 
 
-@dataclass
+@dataclass(init=False)
 class FileBoxOptionsBuffer(FileBoxOptionsBase):
     """
     file file-box options
@@ -88,7 +89,7 @@ class FileBoxOptionsBuffer(FileBoxOptionsBase):
     type: FileBoxType = FileBoxType.Buffer
 
 
-@dataclass
+@dataclass(init=False)
 class FileBoxOptionsStream(FileBoxOptionsBase):
     """
     stream file-box options
@@ -98,7 +99,7 @@ class FileBoxOptionsStream(FileBoxOptionsBase):
     type: FileBoxType = FileBoxType.Stream
 
 
-@dataclass
+@dataclass(init=False)
 class FileBoxOptionsQrCode(FileBoxOptionsBase):
     """
     qr-code file-box options
@@ -107,7 +108,7 @@ class FileBoxOptionsQrCode(FileBoxOptionsBase):
     type: FileBoxType = FileBoxType.QRCode
 
 
-@dataclass
+@dataclass(init=False)
 class FileBoxOptionsBase64(FileBoxOptionsBase):
     """
     base64 file-box options
