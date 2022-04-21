@@ -5,6 +5,7 @@ from typing import List
 
 import pytest
 
+from wechaty_puppet.schemas.event import EventRoomTopicPayload
 from wechaty_puppet.schemas.event import EventFriendshipPayload, EventResetPayload
 from wechaty_puppet.schemas.contact import ContactQueryFilter
 from wechaty_puppet.file_box import FileBoxOptionsUrl, FileBoxType
@@ -40,3 +41,16 @@ def test_value_error():
     with pytest.raises(ValueError):
         event_reset_payload_data = {"error_field": "error_value"}
         EventResetPayload(**event_reset_payload_data)
+
+
+def test_empty_field():
+    """test dataclass when there is empty field in the input data"""
+    kwargs = {
+        'changer_id': 'wxid_gwemn8cbz51621',
+        'new_topic': '小助手个人测试群',
+        'old_topic': '',
+        'room_id': '20019749229@chatroom',
+        'timestamp': 1650525123,
+    }
+    payload = EventRoomTopicPayload(**kwargs)
+    assert payload.old_topic == ''
