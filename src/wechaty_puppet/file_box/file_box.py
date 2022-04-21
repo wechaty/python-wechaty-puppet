@@ -9,6 +9,7 @@ import requests
 import os
 import base64
 from collections import defaultdict
+import mimetypes
 
 from typing import (
     Type,
@@ -215,7 +216,9 @@ class FileBox:
             # TODO -> should get the name of the file
             name = response.content.title().decode(encoding='utf-8')
         options = FileBoxOptionsUrl(name=name, url=url, headers=headers)
-        return cls(options)
+        file_box: FileBox = cls(options)
+        file_box.mimeType = mimetypes.guess_type(url)
+        return file_box
 
     @classmethod
     def from_file(cls: Type[FileBox], path: str, name: Optional[str] = None
@@ -235,7 +238,9 @@ class FileBox:
             content = base64.b64encode(f.read())
 
         # to make `from_file` run well temporary
-        return cls.from_base64(base64=content, name=name)
+        file_box: FileBox = cls.from_base64(base64=content, name=name)
+        file_box.mimeType = mimetypes.guess_type(path)
+        return file_box
 
     @classmethod
     def from_stream(cls: Type[FileBox], stream: bytes, name: str) -> FileBox:
