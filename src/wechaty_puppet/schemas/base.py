@@ -77,7 +77,9 @@ class BaseDataClass:
                 kwargs.pop(invalid_field)
 
         for field in all_fields:
-            value = kwargs.get(field.name, None) or field.default
+            value = kwargs.get(field.name, None)
+            if value is None:
+                value = field.default
 
             if field.default_factory is not MISSING:
                 value = field.default_factory()
