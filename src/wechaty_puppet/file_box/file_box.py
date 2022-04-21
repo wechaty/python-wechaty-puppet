@@ -217,7 +217,7 @@ class FileBox:
             name = response.content.title().decode(encoding='utf-8')
         options = FileBoxOptionsUrl(name=name, url=url, headers=headers)
         file_box: FileBox = cls(options)
-        file_box.mimeType = mimetypes.guess_type(url)
+        file_box.mimeType = mimetypes.guess_type(url)[0] or ''
         return file_box
 
     @classmethod
@@ -239,7 +239,7 @@ class FileBox:
 
         # to make `from_file` run well temporary
         file_box: FileBox = cls.from_base64(base64=content, name=name)
-        file_box.mimeType = mimetypes.guess_type(path)
+        file_box.mimeType = mimetypes.guess_type(path)[0] or ''
         return file_box
 
     @classmethod
