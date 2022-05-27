@@ -38,5 +38,5 @@ def test_to_json_str_check_data():
     json_string = file_box.to_json_str()
     json_data = json.loads(json_string)
     assert 'mimeType' in json_data
-    assert json_data['mimeType'] == 'text/plain'
+    assert json_data['mimeType'] == 'text/media'
     assert json_data['mediaType'] == 'text/media'

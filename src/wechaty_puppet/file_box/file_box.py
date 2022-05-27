@@ -32,6 +32,10 @@ from .type import (
     Metadata, FileBoxType)
 
 from wechaty_puppet.exceptions import WechatyPuppetConfigurationError
+from wechaty_puppet.logger import get_logger
+
+
+logger = get_logger("FileBox")
 
 
 class FileBoxEncoder(json.JSONEncoder):
@@ -49,7 +53,8 @@ class FileBox:
     """
 
     def __init__(self, options: FileBoxOptionsBase):
-        
+        logger.info('init file-box with option<%s>',  options)
+
         # TODO: will be deprecated after: Dec, 2022
         self._mimeType: Optional[str] = None
 
@@ -91,11 +96,19 @@ class FileBox:
                     f'Base64 File Data Type is invalid, str/bytes is supported')
     @property
     def mimeType(self) -> Optional[str]:
-        return self._mimeType
+        logger.warn(
+            'mimeType will be deprecated after Dec, 2022, '
+            'we suggest that you should use mediaType property'
+        )
+        return self._mediaType
     
     @mimeType.setter
     def mimeType(self, value: str):
-        self._mimeType = value
+        logger.warn(
+            'mimeType will be deprecated after Dec, 2022, '
+            'we suggest that you should use mediaType property'
+        )
+        self._mediaType = value
     
     @property
     def mediaType(self) -> Optional[str]:
@@ -167,7 +180,16 @@ class FileBox:
         dump the file content to json object
         :return:
         """
-        json_data = get_json_data(self) 
+        # 1. if sending voice file, so check the metadata
+        if self.name.endswith('.sil'):
+            if not self.metadata or not getattr(self.metadata, 'voiceLength'):
+                logger.warn(
+                    'detect that you want to send voice file, '
+                    'but metadata is not valid, please set it, '
+                    'eg: file_box.metadata = {"voiceLength": 2000}'
+                )
+
+        json_data = get_json_data(self)
         data = json.dumps(json_data, cls=FileBoxEncoder, indent=4)
         return data
 
@@ -248,8 +270,17 @@ class FileBox:
         """
         if not os.path.exists(path):
             raise FileNotFoundError(f'{path} file not found')
+        
         if name is None:
             name = os.path.basename(path)
+        
+        # 1. check the audio related code
+        if name.endswith('.silk') or name.endswith('.slk'):
+            logger.warn('detect that you want to send voice file which should be <name>.sil pattern. So we help you rename it.')
+            if name.endswith('.silk'):
+                name = name[:-4] + 'sil'
+            if name.endswith('.slk'):
+                name = name[:-3] + 'slk'
 
         with open(path, 'rb') as f:
             content = base64.b64encode(f.read())
@@ -280,7 +311,7 @@ class FileBox:
         return cls(options)
 
     @classmethod
-    def from_base64(cls: Type[FileBox], base64: bytes, name: str) -> FileBox:
+    def from_base64(cls: Type[FileBox], base64: bytes, name: str = 'base64.dat') -> FileBox:
         """
         create file-box from base64 str
 
