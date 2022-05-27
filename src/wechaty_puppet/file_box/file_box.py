@@ -19,7 +19,7 @@ from typing import (
 
 import qrcode   # type: ignore
 
-from .utils import extract_file_name_from_url, data_url_to_base64
+from .utils import extract_file_name_from_url, data_url_to_base64, get_json_data
 
 from .type import (
     FileBoxOptionsFile,
@@ -49,13 +49,19 @@ class FileBox:
     """
 
     def __init__(self, options: FileBoxOptionsBase):
+        
+        # TODO: will be deprecated after: Dec, 2022
+        self._mimeType: Optional[str] = None
 
-        self.mimeType: Optional[str] = None
+        self._mediaType: Optional[str] = None
 
         self._metadata: Metadata = defaultdict()
 
         self.name = options.name
+
+        # TODO: will be deprecated after: Dec, 2022
         self.boxType: int = options.type.value
+        self.type: int = self.boxType   # type: ignore
 
         if isinstance(options, FileBoxOptionsFile):
             self.localPath = options.path
@@ -83,6 +89,21 @@ class FileBox:
             else:
                 raise WechatyPuppetConfigurationError(
                     f'Base64 File Data Type is invalid, str/bytes is supported')
+    @property
+    def mimeType(self) -> Optional[str]:
+        return self._mimeType
+    
+    @mimeType.setter
+    def mimeType(self, value: str):
+        self._mimeType = value
+    
+    @property
+    def mediaType(self) -> Optional[str]:
+        return self._mediaType
+    
+    @mediaType.setter
+    def mediaType(self, value: str):
+        self._mediaType = value
 
     @property
     def metadata(self) -> dict:
@@ -146,11 +167,7 @@ class FileBox:
         dump the file content to json object
         :return:
         """
-        json_data = {}
-        for key in self.__dict__:
-            if getattr(self, key) is not None:
-                json_data[key] = getattr(self,key)
-
+        json_data = get_json_data(self) 
         data = json.dumps(json_data, cls=FileBoxEncoder, indent=4)
         return data
 
@@ -342,7 +359,3 @@ class FileBox:
         file_box.metadata = json_obj['metadata']
 
         return file_box
-
-
-
-

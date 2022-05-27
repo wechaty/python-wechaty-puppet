@@ -1,9 +1,12 @@
 """
 file-box utils functions
 """
+from copy import deepcopy
+import types
 import mimetypes
 import os
-from typing import Tuple
+import inspect
+from typing import Any, Dict, Tuple
 from urllib.parse import urlparse
 import requests
 import uuid
@@ -71,3 +74,28 @@ def extract_file_name_from_url(url: str) -> Tuple[str, str]:
 
         file_name = f'{url[url.rindex("/")+1 :]}{suffix}'
         return file_name, content_type
+
+
+def get_json_data(obj: object) -> Dict[str, Any]:
+    """get_json_data 
+
+    Args:
+        obj (object): the instance of object
+
+    Returns:
+        Dict[str, Any]: the final json data
+    """
+    # 1. get all value fields
+    json_data = deepcopy(obj.__dict__)
+
+    # 2. get all properties
+    all_fields = dir(obj)
+    for key in list(json_data.keys()):
+        if not key.startswith('_'):
+            continue
+        
+        properity_key = key[1:]
+        if properity_key in all_fields and not inspect.ismethod(getattr(obj, properity_key)):
+            json_data.pop(key)
+            json_data[properity_key] = getattr(obj, properity_key)
+    return json_data
