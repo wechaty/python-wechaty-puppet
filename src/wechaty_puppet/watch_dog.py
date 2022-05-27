@@ -61,7 +61,7 @@ class Watchdog(AsyncIOEventEmitter):
     #     super().on(event, f)
     #     return self
 
-    def _start_timer(self, timeout: int):
+    async def _start_timer(self, timeout: int):
         """start the timer to record watchdog"""
         log.info('Watchdog <%s> _start_timer() setTimeout() after %d',
                  self.name, timeout)
@@ -69,7 +69,7 @@ class Watchdog(AsyncIOEventEmitter):
         if self.timer is not None:
             raise ValueError('timer already exist !')
 
-        asyncio.sleep(timeout)
+        await asyncio.sleep(timeout)
         timeout = self._last_food.timeout if self._last_food is not None else \
             self.default_timeout
         self.emit('reset', self._last_food, timeout)

@@ -81,7 +81,9 @@ class BaseDataClass:
             if value is None:
                 value = field.default
 
+            # type: ignore
             if field.default_factory is not MISSING:
+                # type: ignore
                 value = field.default_factory()
 
             if value is MISSING:
