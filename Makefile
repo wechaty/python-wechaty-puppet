@@ -82,7 +82,7 @@ install:
 
 .PHONY: pytest
 pytest:
-	pytest src/ tests/
+	pytest src/ tests/ -s
 
 .PHONY: test-unit
 test-unit: pytest
