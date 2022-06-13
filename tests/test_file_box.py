@@ -86,3 +86,5 @@ def test_silk_voice_file(file_name: str):
     assert file_box.name == 'test.sil'
     assert json_string['metadata']['voiceLength'] == 2000
     assert json_string['mediaType'] == 'audio/silk'
+    
+    assert json_string['type'] == file_box.type().value
