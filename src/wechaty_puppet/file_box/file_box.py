@@ -58,9 +58,9 @@ class FileBox:
         # TODO: will be deprecated after: Dec, 2022
         self._mimeType: Optional[str] = None
 
-        self._mediaType: Optional[str] = None
+        self.mediaType: Optional[str] = None
 
-        self._metadata: Metadata = defaultdict()
+        self.metadata: Metadata = defaultdict()
 
         self.name = options.name
 
@@ -100,7 +100,7 @@ class FileBox:
             'mimeType will be deprecated after Dec, 2022, '
             'we suggest that you should use mediaType property'
         )
-        return self._mediaType
+        return self.mediaType
     
     @mimeType.setter
     def mimeType(self, value: str):
@@ -108,31 +108,7 @@ class FileBox:
             'mimeType will be deprecated after Dec, 2022, '
             'we suggest that you should use mediaType property'
         )
-        self._mediaType = value
-    
-    @property
-    def mediaType(self) -> Optional[str]:
-        return self._mediaType
-    
-    @mediaType.setter
-    def mediaType(self, value: str):
-        self._mediaType = value
-
-    @property
-    def metadata(self) -> dict:
-        """
-        get meta data for file-box
-        """
-        return self._metadata
-
-    @metadata.setter
-    def metadata(self, data: Metadata):
-        """
-        set meta data for file-box
-        :param data:
-        :return:
-        """
-        self._metadata.update(data)
+        self.mediaType = value
 
     def type(self) -> FileBoxType:
         """get filebox type"""
@@ -182,7 +158,7 @@ class FileBox:
         """
         # 1. if sending voice file, so check the metadata
         if self.name.endswith('.sil'):
-            if not self.metadata or not getattr(self.metadata, 'voiceLength'):
+            if not self.metadata or not self.metadata.get('voiceLength', None):
                 logger.warn(
                     'detect that you want to send voice file, '
                     'but metadata is not valid, please set it, '
@@ -260,13 +236,17 @@ class FileBox:
         return file_box
 
     @classmethod
-    def from_file(cls: Type[FileBox], path: str, name: Optional[str] = None
-                  ) -> FileBox:
-        """
-        create file-box from file
+    def from_file(cls: Type[FileBox], path: str, name: Optional[str] = None) -> FileBox:
+        """create FileBox from local file, which can be any type of file
 
-        2020.08.16 -> hostie-server don't support file type, so we will change
-            this FileBox type to base64 default
+        Examples:
+            >>> file_box = FileBox.from_file('beautiful-gril.png')
+            >>> # or
+            >>> file_box = FileBox.from_file('hello.sil')
+            >>> file_box.metadata = {'voiceLength': 2000}
+
+        Returns:
+            _description_
         """
         if not os.path.exists(path):
             raise FileNotFoundError(f'{path} file not found')
@@ -280,14 +260,19 @@ class FileBox:
             if name.endswith('.silk'):
                 name = name[:-4] + 'sil'
             if name.endswith('.slk'):
-                name = name[:-3] + 'slk'
+                name = name[:-3] + '.sil'
 
         with open(path, 'rb') as f:
             content = base64.b64encode(f.read())
 
-        # to make `from_file` run well temporary
         file_box: FileBox = cls.from_base64(base64=content, name=name)
-        file_box.mimeType = mimetypes.guess_type(path)[0] or ''
+
+        # if sending the voice file, the mediaType must be: 'audio/silk'
+        if file_box.name.endswith('.sil'):
+            file_box.mediaType = 'audio/silk'
+        else:
+            file_box.mimeType = mimetypes.guess_type(path)[0] or ''
+
         return file_box
 
     @classmethod

@@ -90,12 +90,11 @@ def get_json_data(obj: object) -> Dict[str, Any]:
 
     # 2. get all properties
     all_fields = dir(obj)
-    for key in list(json_data.keys()):
-        if not key.startswith('_'):
+    for key in all_fields:
+        if key.startswith('_'):
             continue
         
-        properity_key = key[1:]
-        if properity_key in all_fields and not inspect.ismethod(getattr(obj, properity_key)):
-            json_data.pop(key)
-            json_data[properity_key] = getattr(obj, properity_key)
+        if f'_{key}' in json_data and not inspect.ismethod(getattr(obj, key)):
+            json_data.pop(f'_{key}')
+            json_data[key] = getattr(obj, key)
     return json_data
