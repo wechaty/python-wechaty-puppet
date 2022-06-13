@@ -113,7 +113,7 @@ class FileBox:
     def type(self) -> FileBoxType:
         """get filebox type"""
         return FileBoxType(self._type)
-
+    
     async def ready(self):
         """
         sync the name from remote
@@ -166,6 +166,11 @@ class FileBox:
                 )
 
         json_data = get_json_data(self)
+
+        # make type in the serialized json data
+        if 'type' not in json_data:
+            json_data['type'] = self.type().value
+
         data = json.dumps(json_data, cls=FileBoxEncoder, indent=4)
         return data
 
@@ -346,7 +351,7 @@ class FileBox:
 
         # original box_type field name is boxType
         if 'type' not in json_obj:
-            raise Exception('boxType field must be required')
+            raise Exception('box field must be required')
         # assert that boxType value must match the value of FileBoxType values
 
         if json_obj['type'] == FileBoxType.Base64.value:
