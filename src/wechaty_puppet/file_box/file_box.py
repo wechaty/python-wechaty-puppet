@@ -258,9 +258,9 @@ class FileBox:
         if name.endswith('.silk') or name.endswith('.slk'):
             logger.warn('detect that you want to send voice file which should be <name>.sil pattern. So we help you rename it.')
             if name.endswith('.silk'):
-                name = name[:-4] + 'sil'
+                name = name.replace('.silk', '.sil')
             if name.endswith('.slk'):
-                name = name[:-3] + '.sil'
+                name = name.replace('.slk', '.sil')
 
         with open(path, 'rb') as f:
             content = base64.b64encode(f.read())
