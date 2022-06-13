@@ -275,6 +275,16 @@ class FileBox:
         # if sending the voice file, the mediaType must be: 'audio/silk'
         if file_box.name.endswith('.sil'):
             file_box.mediaType = 'audio/silk'
+            
+            if not file_box.metadata or not file_box.metadata.get('voiceLength', None):
+                logger.warn(
+                    'detect that you want to send voice file, but no voiceLength setting, '
+                    'so use the defualt settign: file_box.metadata = {"voiceLength": 1000}'
+                    'you should set it manually'
+                )
+                file_box.metadata = {
+                    "voiceLength": 1000
+                }
         else:
             file_box.mimeType = mimetypes.guess_type(path)[0] or ''
 
