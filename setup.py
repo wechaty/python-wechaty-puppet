@@ -7,7 +7,8 @@ import setuptools
 
 def versioning(version: str) -> str:
     """version to specification"""
-    sem_ver = semver.parse(version)
+    
+    sem_ver = semver.parse(version, loose=None)
 
     major = sem_ver['major']
     minor = sem_ver['minor']
