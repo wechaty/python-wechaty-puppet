@@ -66,7 +66,7 @@ class FileBox:
 
         # TODO: will be deprecated after: Dec, 2022
         self.boxType: int = options.type.value
-        self.type: int = self.boxType   # type: ignore
+        self._type: int = self.boxType   # type: ignore
 
         if isinstance(options, FileBoxOptionsFile):
             self.localPath = options.path
@@ -112,7 +112,7 @@ class FileBox:
 
     def type(self) -> FileBoxType:
         """get filebox type"""
-        return FileBoxType(self.boxType)
+        return FileBoxType(self._type)
 
     async def ready(self):
         """
@@ -345,21 +345,21 @@ class FileBox:
             json_obj = obj
 
         # original box_type field name is boxType
-        if 'boxType' not in json_obj:
+        if 'type' not in json_obj:
             raise Exception('boxType field must be required')
         # assert that boxType value must match the value of FileBoxType values
 
-        if json_obj['boxType'] == FileBoxType.Base64.value:
+        if json_obj['type'] == FileBoxType.Base64.value:
             file_box = FileBox.from_base64(
                 base64=json_obj['base64'],
                 name=json_obj['name']
             )
-        elif json_obj['boxType'] == FileBoxType.Url.value:
+        elif json_obj['type'] == FileBoxType.Url.value:
             file_box = FileBox.from_url(
                 url=json_obj['remoteUrl'],
                 name=json_obj['name']
             )
-        elif json_obj['boxType'] == FileBoxType.QRCode.value:
+        elif json_obj['type'] == FileBoxType.QRCode.value:
             file_box = FileBox.from_qr_code(
                 qr_code=json_obj['qrCode']
             )
