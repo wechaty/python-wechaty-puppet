@@ -168,8 +168,8 @@ class FileBox:
         json_data = get_json_data(self)
 
         # make type in the serialized json data
-        if 'type' not in json_data:
-            json_data['type'] = self.type().value
+        if 'boxType' not in json_data:
+            json_data['boxType'] = self.type().value
 
         data = json.dumps(json_data, cls=FileBoxEncoder, indent=4)
         return data
@@ -360,21 +360,21 @@ class FileBox:
             json_obj = obj
 
         # original box_type field name is boxType
-        if 'type' not in json_obj:
+        if 'boxType' not in json_obj:
             raise Exception('box field must be required')
         # assert that boxType value must match the value of FileBoxType values
 
-        if json_obj['type'] == FileBoxType.Base64.value:
+        if json_obj['boxType'] == FileBoxType.Base64.value:
             file_box = FileBox.from_base64(
                 base64=json_obj['base64'],
                 name=json_obj['name']
             )
-        elif json_obj['type'] == FileBoxType.Url.value:
+        elif json_obj['boxType'] == FileBoxType.Url.value:
             file_box = FileBox.from_url(
                 url=json_obj['remoteUrl'],
                 name=json_obj['name']
             )
-        elif json_obj['type'] == FileBoxType.QRCode.value:
+        elif json_obj['boxType'] == FileBoxType.QRCode.value:
             file_box = FileBox.from_qr_code(
                 qr_code=json_obj['qrCode']
             )
