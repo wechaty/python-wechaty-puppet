@@ -53,7 +53,7 @@ class FileBox:
     """
 
     def __init__(self, options: FileBoxOptionsBase):
-        logger.info('init file-box with option<%s>',  options)
+        logger.info('init file-box<%s, %s>',  type(options), options.name or '')
 
         # TODO: will be deprecated after: Dec, 2022
         self._mimeType: Optional[str] = None
