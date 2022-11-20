@@ -66,10 +66,10 @@ class Puppet:
     python-wechaty-puppet-XX can be all of the protocol of IM software.
     """
 
-    def __init__(self, options: PuppetOptions, name: str = 'puppet'):
+    def __init__(self, options: Optional[PuppetOptions] = None, name: str = 'puppet'):
         self.name: str = name
         self.state: StateSwitch = StateSwitch(name)
-        self.options = options
+        self.options = options or PuppetOptions()
 
     async def message_image(
             self,
@@ -167,7 +167,7 @@ class Puppet:
         raise NotImplementedError
 
     async def message_send_text(self, conversation_id: str, message: str,
-                                mention_ids: List[str] = None) -> str:
+                                mention_ids: Optional[List[str]] = None) -> str:
         """
         send text message
         :param mention_ids:
@@ -362,14 +362,14 @@ class Puppet:
         """
         raise NotImplementedError
 
-    async def room_create(self, contact_ids: List[str], topic: str = None
+    async def room_create(self, contact_ids: List[str], topic: Optional[str] = None
                           ) -> str:
         """
         create room with contact_ids and topic
         """
         raise NotImplementedError
 
-    async def room_search(self, query: RoomQueryFilter = None) -> List[str]:
+    async def room_search(self, query: Optional[RoomQueryFilter] = None) -> List[str]:
         """
         search room by query filter
         """
@@ -446,7 +446,7 @@ class Puppet:
     async def room_announce(
             self,
             room_id: str,
-            announcement: str = None) -> str:
+            announcement: Optional[str] = None) -> str:
         """
         set/get room announcement
         """
