@@ -66,7 +66,8 @@ class Puppet:
     python-wechaty-puppet-XX can be all of the protocol of IM software.
     """
 
-    def __init__(self, options: Optional[PuppetOptions] = None, name: str = 'puppet'):
+    def __init__(self, options: Optional[PuppetOptions] = None, name: str = 'puppet', **kwargs):
+        super().__init__(**kwargs)
         self.name: str = name
         self.state: StateSwitch = StateSwitch(name)
         self.options = options or PuppetOptions()
